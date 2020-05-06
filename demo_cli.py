@@ -119,9 +119,10 @@ if __name__ == '__main__':
             # Get the reference audio filepath
             message = "Reference voice: enter an audio filepath of a voice to be cloned (mp3, " \
                       "wav, m4a, flac, ...):\n"
-            in_fpath = Path(input(message).replace("\"", "").replace("\'", ""))
             
-            
+            # in_fpath = Path(input(message).replace("\"", "").replace("\'", ""))
+            in_fpath = 'stas_eng.m4a'
+
             ## Computing the embedding
             # First, we load the wav using the function that the speaker encoder provides. This is 
             # important: there is preprocessing that must be applied.
@@ -167,12 +168,13 @@ if __name__ == '__main__':
             generated_wav = np.pad(generated_wav, (0, synthesizer.sample_rate), mode="constant")
             
             # Play the audio (non-blocking)
+            args.no_sound = True
             if not args.no_sound:
                 sd.stop()
                 sd.play(generated_wav, synthesizer.sample_rate)
                 
             # Save it on the disk
-            fpath = "demo_output_%02d.wav" % num_generated
+            fpath = "./generated_samples/demo_output_%02d.wav" % num_generated
             print(generated_wav.dtype)
             librosa.output.write_wav(fpath, generated_wav.astype(np.float32), 
                                      synthesizer.sample_rate)
